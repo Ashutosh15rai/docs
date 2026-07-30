@@ -1,73 +1,54 @@
+import { Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { Route, Switch, Router as WouterRouter } from 'wouter';
 
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { ScrollToTop } from '@/components/layout/ScrollToTop';
 
-import { HeroSection } from '@/sections/home/HeroSection';
-import { TrustBadgesSection } from '@/sections/home/TrustBadgesSection';
-import { StatisticsSection } from '@/sections/home/StatisticsSection';
-import { FeaturedCoursesSection } from '@/sections/home/FeaturedCoursesSection';
-import { WhyChooseUsSection } from '@/sections/home/WhyChooseUsSection';
-import { LearningPathsSection } from '@/sections/home/LearningPathsSection';
-import { PremiumCommunitySection } from '@/sections/home/PremiumCommunitySection';
-import { DailyMarketInsightsSection } from '@/sections/home/DailyMarketInsightsSection';
-import { SuccessStoriesSection } from '@/sections/home/SuccessStoriesSection';
-import { TestimonialsSection } from '@/sections/home/TestimonialsSection';
-import { PricingSection } from '@/sections/home/PricingSection';
-import { FAQSection } from '@/sections/home/FAQSection';
-import { CTASection } from '@/sections/home/CTASection';
-
-import NotFound from '@/pages/not-found';
+import HomePage from '@/pages/home';
+import AboutPage from '@/pages/about';
+import CoursesPage from '@/pages/courses';
+import LearningPathsPage from '@/pages/learning-paths';
+import PremiumCommunityPage from '@/pages/premium-community';
+import MarketInsightsPage from '@/pages/market-insights';
+import TestimonialsPage from '@/pages/testimonials';
+import ContactPage from '@/pages/contact';
+import FAQPage from '@/pages/faq';
+import PrivacyPolicyPage from '@/pages/privacy-policy';
+import TermsConditionsPage from '@/pages/terms-and-conditions';
+import NotFoundPage from '@/pages/not-found';
 
 const queryClient = new QueryClient();
-
-function HomePage() {
-  return (
-    <main id="main">
-      <HeroSection />
-      <TrustBadgesSection />
-      <StatisticsSection />
-      <FeaturedCoursesSection />
-      <WhyChooseUsSection />
-      <LearningPathsSection />
-      <PremiumCommunitySection />
-      <DailyMarketInsightsSection />
-      <SuccessStoriesSection />
-      <TestimonialsSection />
-      <PricingSection />
-      <FAQSection />
-      <CTASection />
-    </main>
-  );
-}
-
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={HomePage} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <div className="flex-1">
-              <Router />
-            </div>
-            <Footer />
+        <div className="flex min-h-screen flex-col">
+          <ScrollToTop />
+          <Navbar />
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/courses" element={<CoursesPage />} />
+              <Route path="/learning-paths" element={<LearningPathsPage />} />
+              <Route path="/premium-community" element={<PremiumCommunityPage />} />
+              <Route path="/market-insights" element={<MarketInsightsPage />} />
+              <Route path="/testimonials" element={<TestimonialsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
           </div>
-        </WouterRouter>
-        <Toaster />
+          <Footer />
+        </div>
       </TooltipProvider>
+      <Toaster />
     </QueryClientProvider>
   );
 }

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X, GraduationCap } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { Menu, GraduationCap, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useScrolled } from '@/hooks/useScrolled';
 import {
@@ -19,6 +20,7 @@ import { WHATSAPP_URL } from '@/constants/urls';
 export function Navbar() {
   const scrolled = useScrolled(10);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <header
@@ -32,37 +34,53 @@ export function Navbar() {
       <Container>
         <nav className="flex h-16 items-center justify-between" aria-label="Main navigation">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group">
+          <NavLink to="/" className="flex items-center gap-2 group">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-navy-900 text-white transition-transform group-hover:scale-105">
               <GraduationCap className="h-5 w-5" />
             </div>
             <span className="text-lg font-bold tracking-tight text-navy-900">
               Vriddhi<span className="text-blue-600">Research</span>
             </span>
-          </a>
+          </NavLink>
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
-              <a
+              <NavLink
                 key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-gray-600 hover:text-navy-900 transition-colors relative group"
+                to={link.href}
+                className={({ isActive }) =>
+                  cn(
+                    'text-sm font-medium transition-colors relative group',
+                    isActive
+                      ? 'text-navy-900'
+                      : 'text-gray-600 hover:text-navy-900'
+                  )
+                }
+                end={link.href === '/'}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-blue-600 transition-all duration-300 group-hover:w-full" />
-              </a>
+                <span
+                  className={cn(
+                    'absolute -bottom-1 left-0 h-0.5 bg-blue-600 transition-all duration-300',
+                    location.pathname === link.href ||
+                      (link.href !== '/' && location.pathname.startsWith(link.href))
+                      ? 'w-full'
+                      : 'w-0 group-hover:w-full'
+                  )}
+                />
+              </NavLink>
             ))}
           </div>
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="/courses"
+            <NavLink
+              to="/courses"
               className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
             >
               Courses
-            </a>
+            </NavLink>
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -97,22 +115,31 @@ export function Navbar() {
               <div className="flex flex-col px-6 py-6 gap-1">
                 {NAV_LINKS.map((link) => (
                   <SheetClose asChild key={link.href}>
-                    <a
-                      href={link.href}
-                      className="flex items-center rounded-lg px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-navy-900 transition-colors"
+                    <NavLink
+                      to={link.href}
+                      end={link.href === '/'}
+                      className={({ isActive }) =>
+                        cn(
+                          'flex items-center rounded-lg px-4 py-3 text-base font-medium transition-colors',
+                          isActive
+                            ? 'bg-blue-50 text-blue-700'
+                            : 'text-gray-700 hover:bg-gray-50 hover:text-navy-900'
+                        )
+                      }
+                      onClick={() => setOpen(false)}
                     >
                       {link.label}
-                    </a>
+                    </NavLink>
                   </SheetClose>
                 ))}
                 <div className="mt-6 flex flex-col gap-3">
                   <SheetClose asChild>
-                    <a
-                      href="/courses"
+                    <NavLink
+                      to="/courses"
                       className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       Browse Courses
-                    </a>
+                    </NavLink>
                   </SheetClose>
                   <SheetClose asChild>
                     <a

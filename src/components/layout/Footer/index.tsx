@@ -1,6 +1,7 @@
-import { GraduationCap, Instagram, Youtube, Facebook, Mail } from 'lucide-react';
+import { GraduationCap, Instagram, Youtube, Facebook, Mail, ArrowUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Container } from '../Container';
-import { cn } from '@/lib/utils';
+import { Newsletter } from '@/components/shared/Newsletter';
 import { WHATSAPP_URL, SEBI_REG } from '@/constants/urls';
 
 const FOOTER_COLUMNS = [
@@ -17,10 +18,9 @@ const FOOTER_COLUMNS = [
   {
     title: 'Legal',
     links: [
-      { label: 'Disclosure', href: '/disclosure' },
       { label: 'Privacy Policy', href: '/privacy-policy' },
-      { label: 'Refund Policy', href: '/refund-policy' },
       { label: 'Terms & Conditions', href: '/terms-and-conditions' },
+      { label: 'Refund Policy', href: '/refund-policy' },
       { label: 'Disclaimer', href: '/disclaimer' },
     ],
   },
@@ -31,7 +31,6 @@ const FOOTER_COLUMNS = [
       { label: 'Grievance Redressal', href: '/grievance-redressal' },
       { label: 'Onboard Details', href: '/onboard-details' },
       { label: 'ODR Portal', href: '/odr-portal' },
-      { label: 'User KYC', href: '/user-kyc' },
     ],
   },
 ];
@@ -44,21 +43,25 @@ const SOCIAL_LINKS = [
 ];
 
 export function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="bg-navy-950 text-white">
       {/* Main Footer */}
       <Container>
-        <div className="grid grid-cols-1 gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 py-16 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand Column */}
-          <div className="lg:col-span-1">
-            <a href="/" className="flex items-center gap-2 mb-5">
+          <div className="lg:col-span-2">
+            <Link to="/" className="flex items-center gap-2 mb-5">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white">
                 <GraduationCap className="h-5 w-5" />
               </div>
               <span className="text-lg font-bold tracking-tight">
                 Vriddhi<span className="text-blue-400">Research</span>
               </span>
-            </a>
+            </Link>
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
               Digital Marketing & Financial Education Academy. Building confident traders through structured learning and research-backed insights.
             </p>
@@ -99,30 +102,45 @@ export function Footer() {
               <ul className="space-y-3">
                 {col.links.map((link) => (
                   <li key={link.href}>
-                    <a
-                      href={link.href}
+                    <Link
+                      to={link.href}
                       className="text-sm text-gray-400 hover:text-white transition-colors"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
+
+          {/* Newsletter */}
+          <div className="lg:col-span-1">
+            <Newsletter dark />
+          </div>
         </div>
       </Container>
 
       {/* Disclaimer Bar */}
       <div className="border-t border-white/5">
         <Container>
-          <div className="py-6 text-xs text-gray-500 leading-relaxed">
-            <p>
-              Investment in securities market are subject to market risks. Read all the related documents carefully before investing. Registration granted by SEBI, membership of BSE — in no way guarantee performance of the intermediary or provide any assurance of returns to investors. The content provided is for educational and informational purposes only and should not be construed as investment advice or recommendation.
-            </p>
-            <p className="mt-2">
-              © {new Date().getFullYear()} Vriddhi Research. All Rights Reserved.
-            </p>
+          <div className="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="text-xs text-gray-500 leading-relaxed max-w-3xl">
+              <p>
+                Investment in securities market are subject to market risks. Read all the related documents carefully before investing. Registration granted by SEBI, membership of BSE — in no way guarantee performance of the intermediary or provide any assurance of returns to investors. The content provided is for educational and informational purposes only and should not be construed as investment advice or recommendation.
+              </p>
+              <p className="mt-2">
+                © {new Date().getFullYear()} Vriddhi Research. All Rights Reserved.
+              </p>
+            </div>
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-white/5 px-3 py-2 text-xs font-medium text-gray-400 hover:bg-white/10 hover:text-white transition-colors shrink-0"
+              aria-label="Back to top"
+            >
+              <ArrowUp className="h-3.5 w-3.5" />
+              Back to Top
+            </button>
           </div>
         </Container>
       </div>
