@@ -13,7 +13,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from '@/components/ui/sheet';
-import { Container } from './Container';
+import { Container } from '../Container';
 import { NAV_LINKS } from '@/constants/navigation';
 import { WHATSAPP_URL } from '@/constants/urls';
 
