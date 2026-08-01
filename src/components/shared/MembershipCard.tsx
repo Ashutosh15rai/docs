@@ -32,10 +32,10 @@ export function MembershipCard({
   return (
     <div
       className={cn(
-        'relative flex flex-col rounded-2xl border p-6 lg:p-8',
+        'relative flex flex-col rounded-2xl border p-6 transition-all duration-300 lg:p-8',
         highlighted
-          ? 'border-gold bg-navy-900 text-white shadow-xl'
-          : 'border-gray-200 bg-white text-gray-900',
+          ? 'border-gold bg-navy-900 text-white shadow-xl hover:shadow-2xl hover:shadow-gold/10 lg:-translate-y-1'
+          : 'border-gray-200 bg-white text-gray-900 shadow-sm hover:-translate-y-1 hover:shadow-lg hover:border-gray-300',
         className
       )}
     >
@@ -86,10 +86,10 @@ export function MembershipCard({
       <a
         href={ctaHref}
         className={cn(
-          'mt-8 inline-flex w-full items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition-colors',
+          'mt-8 inline-flex w-full items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition-all active:scale-[0.98]',
           highlighted
-            ? 'bg-gold text-navy-950 hover:bg-gold-light'
-            : 'bg-navy-900 text-white hover:bg-navy-800'
+            ? 'bg-gold text-navy-950 hover:bg-gold-light hover:shadow-md'
+            : 'bg-navy-900 text-white hover:bg-navy-800 hover:shadow-md'
         )}
       >
         {ctaLabel}

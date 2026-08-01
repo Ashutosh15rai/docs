@@ -1,6 +1,7 @@
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { MembershipCard } from '@/components/shared/MembershipCard';
+import { StaggerContainer, StaggerItem } from '@/components/animations/StaggerContainer';
 import { WHATSAPP_URL } from '@/constants/urls';
 
 const PLANS = [
@@ -64,11 +65,16 @@ export function PricingSection() {
         subtitle="Transparent pricing. No hidden fees. Cancel anytime."
         align="center"
       />
-      <div className="mt-12 grid gap-6 lg:grid-cols-3 items-start">
+      <StaggerContainer
+        className="mt-12 grid gap-6 lg:grid-cols-3 items-start"
+        staggerDelay={0.12}
+      >
         {PLANS.map((plan) => (
-          <MembershipCard key={plan.tierName} {...plan} />
+          <StaggerItem key={plan.tierName}>
+            <MembershipCard {...plan} />
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
     </SectionWrapper>
   );
 }

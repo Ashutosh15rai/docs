@@ -36,19 +36,19 @@ export function CTABanner({
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href={primaryHref}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-whatsapp px-6 py-3 text-sm font-semibold text-white hover:bg-whatsapp-hover transition-colors"
+            className="group inline-flex items-center justify-center gap-2 rounded-lg bg-whatsapp px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-whatsapp-hover hover:shadow-lg hover:shadow-whatsapp/25 active:scale-[0.98]"
           >
             {primaryLabel}
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
           {secondaryLabel && secondaryHref && (
             <a
               href={secondaryHref}
               className={cn(
-                'inline-flex items-center justify-center rounded-lg border px-6 py-3 text-sm font-medium transition-colors',
+                'inline-flex items-center justify-center rounded-lg border px-6 py-3 text-sm font-medium transition-all active:scale-[0.98]',
                 variant === 'light'
                   ? 'border-gray-300 text-gray-700 hover:bg-gray-100'
-                  : 'border-white/20 text-white hover:bg-white/10'
+                  : 'border-white/20 text-white hover:bg-white/10 hover:border-white/30'
               )}
             >
               {secondaryLabel}

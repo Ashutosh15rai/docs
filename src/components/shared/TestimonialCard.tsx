@@ -14,10 +14,10 @@ export function TestimonialCard({ testimonial, className, variant = 'default' }:
   return (
     <div
       className={cn(
-        'relative rounded-xl p-6 transition-all',
+        'relative rounded-xl p-6 transition-all duration-300',
         isFeatured
-          ? 'bg-navy-900 text-white shadow-lg'
-          : 'bg-white border border-gray-100 shadow-sm',
+          ? 'bg-navy-900 text-white shadow-lg hover:shadow-xl hover:shadow-blue-900/20'
+          : 'bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-gray-200',
         className
       )}
     >
