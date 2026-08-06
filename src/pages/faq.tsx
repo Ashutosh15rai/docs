@@ -1,58 +1,62 @@
-'use client';
-
-import { PageHero } from '@/components/layout/PageHero';
-import { SectionWrapper } from '@/components/layout/SectionWrapper';
-import { SectionHeading } from '@/components/shared/SectionHeading';
-import { CTABanner } from '@/components/shared/CTABanner';
-import { FadeIn } from '@/components/animations/FadeIn';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
+import { PageHeader } from '@/components/PageHeader';
+import { Container } from '@/components/layout/Container';
 import { FAQS } from '@/data/faqs';
-import { WHATSAPP_URL } from '@/constants/urls';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 
 export default function FAQPage() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
-    <main id="main">
-      <PageHero
-        badge="FAQ"
+    <div className="bg-navy-950 min-h-screen">
+      <PageHeader
         title="Frequently Asked Questions"
-        description="Everything you need to know about our courses, community, membership, and policies."
+        subtitle="Everything you need to know about Vriddhi Research, our services, and how we operate."
+        badge="FAQ"
       />
 
-      <SectionWrapper background="white">
-        <FadeIn>
-          <div className="mx-auto max-w-3xl">
-            <Accordion type="single" collapsible className="w-full">
-              {FAQS.map((faq, i) => (
-                <AccordionItem key={i} value={`item-${i}`} className="border-b border-gray-100">
-                  <AccordionTrigger className="text-left text-sm font-semibold text-navy-900 hover:no-underline py-5">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm leading-relaxed text-gray-600 pb-5">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+      <section className="relative py-16 lg:py-20">
+        <div className="absolute inset-0 bg-navy-950" />
+        <Container>
+          <div className="max-w-3xl mx-auto space-y-3">
+            {FAQS.map((faq, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.04 }}
+                className="glass rounded-xl overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                  className="flex items-center justify-between w-full px-6 py-5 text-left"
+                >
+                  <span className="text-sm font-medium text-white pr-4">{faq.question}</span>
+                  <motion.div animate={{ rotate: openIndex === i ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                  </motion.div>
+                </button>
+                <AnimatePresence>
+                  {openIndex === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                    >
+                      <div className="px-6 pb-5">
+                        <p className="text-sm text-gray-400 leading-relaxed">{faq.answer}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
           </div>
-        </FadeIn>
-      </SectionWrapper>
-
-      <SectionWrapper background="gray" padding="lg">
-        <CTABanner
-          title="Still Have Questions?"
-          subtitle="Our team is happy to help. Reach out via WhatsApp for the fastest response."
-          primaryLabel="Chat on WhatsApp"
-          primaryHref={WHATSAPP_URL}
-          secondaryLabel="Contact Us"
-          secondaryHref="/contact"
-          variant="navy"
-        />
-      </SectionWrapper>
-    </main>
+        </Container>
+      </section>
+    </div>
   );
 }

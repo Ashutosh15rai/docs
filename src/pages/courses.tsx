@@ -1,108 +1,70 @@
-import { useState } from 'react';
-import { PageHero } from '@/components/layout/PageHero';
-import { SectionWrapper } from '@/components/layout/SectionWrapper';
-import { SectionHeading } from '@/components/shared/SectionHeading';
-import { CourseCard } from '@/components/shared/CourseCard';
-import { CTABanner } from '@/components/shared/CTABanner';
-import { FadeIn } from '@/components/animations/FadeIn';
-import { StaggerContainer, StaggerItem } from '@/components/animations/StaggerContainer';
+import { motion } from 'framer-motion';
+import { BookOpen, Clock, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { PageHeader } from '@/components/PageHeader';
+import { Container } from '@/components/layout/Container';
 import { COURSES } from '@/data/courses';
-import { WHATSAPP_URL } from '@/constants/urls';
-import { Search, SlidersHorizontal } from 'lucide-react';
-
-const LEVELS = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
 export default function CoursesPage() {
-  const [search, setSearch] = useState('');
-  const [level, setLevel] = useState('All');
-
-  const filtered = COURSES.filter((c) => {
-    const matchesSearch =
-      c.title.toLowerCase().includes(search.toLowerCase()) ||
-      c.subtitle.toLowerCase().includes(search.toLowerCase()) ||
-      c.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
-    const matchesLevel = level === 'All' || c.level === level.toLowerCase();
-    return matchesSearch && matchesLevel;
-  });
-
   return (
-    <main id="main">
-      <PageHero
-        badge="Courses"
-        title="Structured Learning for Every Level"
-        description="From market fundamentals to advanced strategies — courses designed by SEBI-registered professionals with real market experience."
+    <div className="bg-navy-950 min-h-screen">
+      <PageHeader
+        title="Courses"
+        subtitle="Structured education for every level — from beginners to advanced traders."
+        badge="Education"
       />
 
-      <SectionWrapper background="white">
-        {/* Search & Filter */}
-        <FadeIn>
-          <div className="flex flex-col sm:flex-row gap-4 mb-10">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search courses, topics, or tags..."
-                className="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <SlidersHorizontal className="h-4 w-4 text-gray-500" />
-              <div className="flex gap-2">
-                {LEVELS.map((l) => (
-                  <button
-                    key={l}
-                    onClick={() => setLevel(l)}
-                    className={`rounded-md px-3 py-2 text-xs font-medium transition-colors ${
-                      level === l
-                        ? 'bg-navy-900 text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    {l}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </FadeIn>
-
-        {/* Course Grid */}
-        {filtered.length > 0 ? (
-          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" staggerDelay={0.08}>
-            {filtered.map((course) => (
-              <StaggerItem key={course.slug}>
-                <a href={`/courses/${course.slug}`} className="block">
-                  <CourseCard course={course} />
-                </a>
-              </StaggerItem>
+      <section className="relative py-16 lg:py-20">
+        <div className="absolute inset-0 bg-navy-950" />
+        <Container>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {COURSES.map((course, i) => (
+              <motion.div
+                key={course.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -4 }}
+                className="glass rounded-2xl overflow-hidden group"
+              >
+                <div className="bg-gradient-to-br from-blue-600/20 via-purple-600/10 to-navy-900 p-8 flex items-center justify-center">
+                  <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-900/30">
+                    <BookOpen className="h-8 w-8 text-white" />
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-400">
+                      {course.badge}
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400">
+                      {course.level}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-1">{course.title}</h3>
+                  <p className="text-sm text-gray-400 mb-4">{course.description}</p>
+                  <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                    <span className="flex items-center gap-1"><BookOpen className="h-3.5 w-3.5" /> {course.lessons} lessons</span>
+                    <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {course.lastUpdated}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-lg font-bold ${course.price === 'Free' ? 'text-emerald-400' : 'text-white'}`}>
+                      {course.price === 'Free' ? 'Free' : `₹${course.price}`}
+                    </span>
+                    <Link
+                      to={`/courses/${course.slug}`}
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      Details <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
             ))}
-          </StaggerContainer>
-        ) : (
-          <div className="text-center py-16">
-            <p className="text-gray-500">No courses match your search criteria.</p>
-            <button
-              onClick={() => { setSearch(''); setLevel('All'); }}
-              className="mt-3 text-sm font-medium text-blue-600 hover:text-blue-700"
-            >
-              Clear filters
-            </button>
           </div>
-        )}
-      </SectionWrapper>
-
-      <SectionWrapper background="gray" padding="lg">
-        <CTABanner
-          title="Not Sure Where to Start?"
-          subtitle="Join our free WhatsApp community and get a feel for our teaching style before enrolling."
-          primaryLabel="Join Free Community"
-          primaryHref={WHATSAPP_URL}
-          secondaryLabel="Contact Us"
-          secondaryHref="/contact"
-          variant="navy"
-        />
-      </SectionWrapper>
-    </main>
+        </Container>
+      </section>
+    </div>
   );
 }

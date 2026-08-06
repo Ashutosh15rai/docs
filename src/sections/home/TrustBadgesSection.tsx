@@ -1,25 +1,58 @@
-import { SectionWrapper } from '@/components/layout/SectionWrapper';
-import { TrustBadgeCard } from '@/components/shared/TrustBadgeCard';
+import { motion } from 'framer-motion';
 import { ShieldCheck, GraduationCap, TrendingUp, Users } from 'lucide-react';
-import { FadeIn } from '@/components/animations/FadeIn';
+import { Container } from '@/components/layout/Container';
 
-const BADGES = [
-  { icon: <ShieldCheck className="h-5 w-5" />, title: 'SEBI Registered', subtitle: 'Research Analyst' },
-  { icon: <GraduationCap className="h-5 w-5" />, title: 'NISM Certified', subtitle: 'Research Team' },
-  { icon: <TrendingUp className="h-5 w-5" />, title: 'Learn + Earn', subtitle: 'Structured Framework' },
-  { icon: <Users className="h-5 w-5" />, title: 'Free Community', subtitle: 'WhatsApp Learning Group' },
+const badges = [
+  { icon: ShieldCheck, title: 'Managed by SEBI Registered', subtitle: 'Research Analyst', color: 'blue' },
+  { icon: GraduationCap, title: 'NISM Certified', subtitle: 'Research Team', color: 'purple' },
+  { icon: TrendingUp, title: 'Learning + Earning', subtitle: 'Framework', color: 'green' },
+  { icon: Users, title: 'Free Trade Community', subtitle: 'WhatsApp Group', color: 'whatsapp' },
 ];
+
+const colorMap: Record<string, string> = {
+  blue: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
+  purple: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
+  green: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
+  whatsapp: 'text-green-400 bg-green-500/10 border-green-500/20',
+};
+
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] } },
+};
 
 export function TrustBadgesSection() {
   return (
-    <SectionWrapper background="white" padding="md">
-      <FadeIn>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {BADGES.map((badge) => (
-            <TrustBadgeCard key={badge.title} icon={badge.icon} title={badge.title} subtitle={badge.subtitle} />
+    <section className="relative py-16 lg:py-20 bg-navy-950">
+      <Container>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-50px' }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6"
+        >
+          {badges.map((badge) => (
+            <motion.div
+              key={badge.title}
+              variants={item}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="glass rounded-2xl p-6 text-center group transition-all hover:bg-white/[0.06]"
+            >
+              <div className={`inline-flex h-14 w-14 items-center justify-center rounded-xl border ${colorMap[badge.color]} mb-4 transition-transform group-hover:scale-110`}>
+                <badge.icon className="h-6 w-6" />
+              </div>
+              <h3 className="text-sm font-bold text-white mb-1">{badge.title}</h3>
+              <p className="text-xs text-gray-400">{badge.subtitle}</p>
+            </motion.div>
           ))}
-        </div>
-      </FadeIn>
-    </SectionWrapper>
+        </motion.div>
+      </Container>
+    </section>
   );
 }

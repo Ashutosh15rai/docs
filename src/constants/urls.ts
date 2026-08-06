@@ -1,5 +1,9 @@
 export const WHATSAPP_URL = 'https://wa.me/919082318833';
 export const SEBI_REG = 'INH000027593';
+export const SEBI_REG_FULL = 'Yeshwant Bhisham Valecha';
 export const SITE_URL = 'https://vriddhiresearch.com';
 export const SUPPORT_EMAIL = 'support@vriddhiresearch.com';
 export const SUPPORT_PHONE = '+91 90823 18833';
+export const GRIEVANCE_EMAIL = 'valechayeshwant@gmail.com';
+export const GRIEVANCE_PHONE = '+91 9724926927';
+export const ADDRESS = 'A-13 A wing Chintamani 2 society, Siddhivinayak Mandir Mithbandar Road, Natu Paranpe Colony, Thane east, Thane, Maharashtra, 400603';

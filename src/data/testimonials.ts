@@ -1,72 +1,33 @@
 export interface Testimonial {
-  id: string;
-  quote: string;
-  authorName: string;
-  authorTitle: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-  avatarInitial: string;
-  avatarColor: string;
-  course?: string;
-  featured?: boolean;
+  name: string;
+  role: string;
+  text: string;
 }
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    id: 't1',
-    quote:
-      'The Options Mastery Program completely changed how I approach the market. The structured curriculum and real-time examples helped me move from random trades to a systematic process.',
-    authorName: 'Rahul',
-    authorTitle: 'Active Subscriber, 8 months',
-    rating: 5,
-    avatarInitial: 'R',
-    avatarColor: 'bg-blue-100 text-blue-700',
-    course: 'Options Mastery Program',
-    featured: true,
+    name: 'Rajesh Kumar',
+    role: 'Full-time Trader, Mumbai',
+    text: 'Vriddhi Research changed how I approach the markets. The structured education combined with real-time research alerts has been invaluable. The free community alone is worth joining.',
   },
   {
-    id: 't2',
-    quote:
-      'I joined the free community first and was impressed by the quality of daily insights. Upgrading to the premium plan was the best decision for my trading journey.',
-    authorName: 'Priya',
-    authorTitle: 'Premium Member, 1 year',
-    rating: 5,
-    avatarInitial: 'P',
-    avatarColor: 'bg-green-100 text-green-700',
-    featured: true,
+    name: 'Priya Sharma',
+    role: 'Working Professional, Bangalore',
+    text: 'As a working professional, I needed a structured approach to trading. Vriddhi Research provided exactly that — clear entry and exit levels with thorough analysis. Their free community is excellent.',
   },
   {
-    id: 't3',
-    quote:
-      'The risk management module alone saved me from several bad trades. Understanding position sizing changed everything about how I allocate capital.',
-    authorName: 'Amit',
-    authorTitle: 'Course Graduate',
-    rating: 5,
-    avatarInitial: 'A',
-    avatarColor: 'bg-amber-100 text-amber-700',
-    featured: false,
+    name: 'Amit Patel',
+    role: 'Swing Trader, Delhi',
+    text: 'The quarterly plan has been the best investment in my trading journey. The research quality is consistent, and the educational sessions help me understand the "why" behind every trade.',
   },
   {
-    id: 't4',
-    quote:
-      'As a complete beginner, the Technical Analysis course gave me the confidence to start reading charts. The instructors explain complex concepts in simple terms.',
-    authorName: 'Sneha',
-    authorTitle: 'Beginner Trader',
-    rating: 4,
-    avatarInitial: 'S',
-    avatarColor: 'bg-purple-100 text-purple-700',
-    featured: false,
+    name: 'Sneha Reddy',
+    role: 'Beginner Trader, Hyderabad',
+    text: 'I started with zero knowledge about trading. The free WhatsApp community and the Vriddhi Options Mastery Program gave me the foundation I needed. Highly recommend for beginners.',
   },
   {
-    id: 't5',
-    quote:
-      'The daily market insights are incredibly valuable. Having a SEBI-registered analyst guide my learning gives me confidence that I am receiving quality education.',
-    authorName: 'Vikram',
-    authorTitle: 'Premium Member, 6 months',
-    rating: 5,
-    avatarInitial: 'V',
-    avatarColor: 'bg-rose-100 text-rose-700',
-    featured: true,
+    name: 'Vikram Singh',
+    role: 'Options Trader, Pune',
+    text: 'SEBI registered, NISM certified, and genuinely educational — that is rare in this space. Vriddhi Research is not about tips, it is about teaching you how to think about markets.',
   },
 ];
-
-export const FEATURED_TESTIMONIALS = TESTIMONIALS.filter((t) => t.featured);

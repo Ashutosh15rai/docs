@@ -1,109 +1,205 @@
-import { SectionWrapper } from '@/components/layout/SectionWrapper';
-import { AlertBox } from '@/components/shared/AlertBox';
-import { FadeIn } from '@/components/animations/FadeIn';
+import { motion } from 'framer-motion';
+import { ShieldCheck, TrendingUp, ArrowRight, AlertTriangle } from 'lucide-react';
+import { Container } from '@/components/layout/Container';
 import { WHATSAPP_URL } from '@/constants/urls';
-import { ArrowRight, Shield } from 'lucide-react';
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] } },
+};
+
+const fadeInLeft = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] } },
+};
+
+const fadeInRight = {
+  hidden: { opacity: 0, x: 30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.23, 1, 0.32, 1] } },
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.12 } },
+};
+
+function MiniChart() {
+  const bars = [35, 55, 40, 65, 50, 75, 60, 80, 45, 70, 85, 65];
+  return (
+    <div className="flex items-end gap-[3px] h-16 px-2">
+      {bars.map((h, i) => (
+        <motion.div
+          key={i}
+          initial={{ height: 0 }}
+          animate={{ height: `${h}%` }}
+          transition={{ delay: 0.5 + i * 0.04, duration: 0.4, ease: 'easeOut' }}
+          className="w-2 rounded-t-sm bg-gradient-to-t from-green-500/80 to-green-400/60"
+        />
+      ))}
+    </div>
+  );
+}
+
+function MarketWidget() {
+  return (
+    <motion.div
+      variants={fadeInRight}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-100px' }}
+      className="relative"
+    >
+      <div className="glass rounded-2xl p-6 lg:p-8 relative overflow-hidden">
+        {/* Glow behind */}
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl" />
+
+        <div className="relative">
+          {/* Nifty 50 */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-1">NIFTY 50</p>
+              <p className="text-3xl font-bold text-white [font-variant-numeric:tabular-nums]">24,388.40</p>
+              <p className="text-sm font-semibold text-green-400 mt-0.5">+128.35 (+0.53%)</p>
+            </div>
+            <MiniChart />
+          </div>
+
+          {/* Secondary Tiles */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+              <p className="text-xs text-gray-400">Bank Nifty</p>
+              <p className="mt-1 text-lg font-bold text-white [font-variant-numeric:tabular-nums]">52,145.20</p>
+              <p className="text-xs text-green-400 font-medium">+0.82% Today</p>
+            </div>
+            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+              <p className="text-xs text-gray-400">Sensex</p>
+              <p className="mt-1 text-lg font-bold text-white [font-variant-numeric:tabular-nums]">80,123.65</p>
+              <p className="text-xs text-green-400 font-medium">+0.44% Today</p>
+            </div>
+          </div>
+
+          <p className="mt-4 text-[11px] text-gray-500 text-center">
+            Market data for educational demonstration
+          </p>
+        </div>
+      </div>
+
+      {/* Floating badge */}
+      <motion.div
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -top-4 -right-4 glass rounded-xl px-3 py-2 text-xs font-medium text-gray-300"
+      >
+        <TrendingUp className="h-3.5 w-3.5 text-green-400 inline mr-1.5" />
+        Live Markets
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export function HeroSection() {
   return (
-    <SectionWrapper background="gray" padding="none" className="pt-12 pb-16 lg:pt-20 lg:pb-24 overflow-hidden">
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-        <div>
-          <FadeIn direction="down" duration={0.4}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-navy-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-widest text-navy-700 shadow-sm mb-6">
-              <Shield className="h-3.5 w-3.5 text-blue-600" />
-              Managed by SEBI Registered Research Analyst
-            </span>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <h1 className="text-4xl font-extrabold tracking-tight text-navy-900 text-balance sm:text-5xl lg:text-6xl">
+    <section className="relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-navy-900 via-navy-900 to-navy-950" />
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/5 rounded-full blur-[100px]" />
+
+      {/* Market Ticker */}
+      <div className="relative bg-navy-950/80 border-b border-white/5 overflow-hidden py-2.5">
+        <motion.div
+          animate={{ x: [0, -1920] }}
+          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+          className="flex gap-8 whitespace-nowrap"
+        >
+          {[...Array(4)].map((_, set) => (
+            <div key={set} className="flex gap-8">
+              {[
+                { name: 'SENSEX', value: '80,123.65', change: '+422.10', positive: true },
+                { name: 'NIFTY BANK', value: '52,145.20', change: '-120.30', positive: false },
+                { name: 'FIN NIFTY', value: '23,891.50', change: '+95.20', positive: true },
+                { name: 'MIDCAP NIFTY', value: '18,234.80', change: '+67.40', positive: true },
+                { name: 'NIFTY 50', value: '24,388.40', change: '+128.35', positive: true },
+                { name: 'BANKNIFTY', value: '52,145.20', change: '-45.60', positive: false },
+              ].map((item) => (
+                <div key={`${set}-${item.name}`} className="flex items-center gap-2 text-xs">
+                  <span className="font-semibold text-gray-300">{item.name}</span>
+                  <span className="text-gray-500">{item.value}</span>
+                  <span className={`font-medium ${item.positive ? 'text-green-400' : 'text-red-400'}`}>
+                    {item.change}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Hero Content */}
+      <Container>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+          className="relative grid gap-12 lg:grid-cols-2 lg:gap-16 items-center py-16 lg:py-24"
+        >
+          <div>
+            <motion.div variants={fadeInUp} className="mb-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-blue-300 backdrop-blur-sm">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Managed by SEBI Registered Research Analyst
+              </span>
+            </motion.div>
+
+            <motion.h1 variants={fadeInUp} className="text-4xl font-extrabold tracking-tight text-white text-balance sm:text-5xl lg:text-[3.5rem] lg:leading-[1.1]">
               Learn Markets Through{' '}
-              <span
-                className="bg-clip-text text-transparent"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(135deg, #2563EB 0%, #3B82F6 60%, #60A5FA 100%)',
-                }}
-              >
+              <span className="gradient-text">
                 Logic, Structure
               </span>{' '}
               & Research.
-            </h1>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p className="mt-6 text-lg leading-relaxed text-gray-600 max-w-xl">
+            </motion.h1>
+
+            <motion.p variants={fadeInUp} className="mt-6 text-lg leading-relaxed text-gray-400 max-w-xl">
               Learn how markets actually work — with research-backed insights, disciplined execution support, and real-time market learning in our free community.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.3}>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <a
+            </motion.p>
+
+            <motion.div variants={fadeInUp} className="mt-8 flex flex-col sm:flex-row gap-4">
+              <motion.a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-whatsapp px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-all hover:bg-whatsapp-hover hover:shadow-md hover:shadow-whatsapp/20 active:scale-[0.98]"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-whatsapp px-7 py-4 text-base font-semibold text-white shadow-lg shadow-whatsapp/20 transition-all hover:shadow-whatsapp/30"
               >
                 Join Free Community
-              </a>
-              <a
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </motion.a>
+              <motion.a
                 href="/courses"
-                className="group inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-3.5 text-base font-medium text-gray-700 transition-all hover:border-gray-400 hover:bg-gray-50 hover:shadow-sm active:scale-[0.98]"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-7 py-4 text-base font-medium text-gray-300 hover:bg-white/[0.06] hover:border-white/20 hover:text-white transition-all"
               >
                 Explore Courses
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.4}>
-            <div className="mt-8 max-w-lg">
-              <AlertBox variant="warning" title="Risk Disclosure">
-                Investment in securities is subject to market risk. Research insights are for educational purposes only. Past performance is not indicative of future results.
-              </AlertBox>
-            </div>
-          </FadeIn>
-        </div>
+              </motion.a>
+            </motion.div>
 
-        <FadeIn direction="left" delay={0.2} duration={0.6} className="relative">
-          <div className="relative rounded-2xl border border-gray-200 bg-white p-6 shadow-xl shadow-navy-900/5 ring-1 ring-black/[0.02] transition-shadow lg:p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <p className="text-sm font-medium text-gray-500">NIFTY 50</p>
-                <p className="text-3xl font-bold text-navy-900 [font-variant-numeric:tabular-nums]">24,388.40</p>
-                <p className="text-sm font-medium text-green-600">+128.35 (+0.53%)</p>
+            {/* Risk Disclaimer */}
+            <motion.div variants={fadeInUp} className="mt-8 max-w-lg">
+              <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3">
+                <AlertTriangle className="h-4 w-4 text-amber-400 mt-0.5 shrink-0" />
+                <p className="text-xs text-amber-200/80 leading-relaxed">
+                  Investment in securities is subject to market risk. Research insights are for educational purposes only. Past performance is not indicative of future results.
+                </p>
               </div>
-              <div className="h-16 w-32 rounded-lg bg-green-50 flex items-end justify-center gap-1 p-2">
-                {[40, 60, 45, 70, 55, 80, 65].map((h, i) => (
-                  <div
-                    key={i}
-                    className="w-2 rounded-sm bg-gradient-to-t from-green-500 to-green-400"
-                    style={{ height: `${h}%` }}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg bg-gray-50 p-4 transition-colors hover:bg-gray-100">
-                <p className="text-xs text-gray-500">Bank Nifty</p>
-                <p className="mt-1 text-lg font-bold text-navy-900 [font-variant-numeric:tabular-nums]">52,145.20</p>
-                <p className="text-xs text-green-600">+0.82%</p>
-              </div>
-              <div className="rounded-lg bg-gray-50 p-4 transition-colors hover:bg-gray-100">
-                <p className="text-xs text-gray-500">Sensex</p>
-                <p className="mt-1 text-lg font-bold text-navy-900 [font-variant-numeric:tabular-nums]">80,123.65</p>
-                <p className="text-xs text-green-600">+0.44%</p>
-              </div>
-            </div>
-            <p className="mt-4 text-xs text-gray-400 text-center">
-              Market data for educational demonstration
-            </p>
+            </motion.div>
           </div>
-          {/* Subtle depth accent behind the card */}
-          <div
-            className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-blue-100/40 via-transparent to-transparent blur-2xl"
-            aria-hidden="true"
-          />
-        </FadeIn>
-      </div>
-    </SectionWrapper>
+
+          <MarketWidget />
+        </motion.div>
+      </Container>
+    </section>
   );
 }
